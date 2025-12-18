@@ -1,0 +1,93 @@
+# Member Management Dashboard for NBA Sports Club
+## Detailed Flow Chart Representation
+
+```plaintext
++----------------------------------------------------------------------------------------------------+
+|                                       Functional Requirements                                      |
++----------------------------------------------------------------------------------------------------+
+| - User Authentication (JWT, OAuth2.0, Role-Based Access Control)                                  |
+| - Member Management: View, Add, Update, Delete (CRUD Operations)                                  |
+| - Membership Payments: Subscription Plans, Invoicing, Payment Status Tracking                    |
+| - Member Profiles: Personal Details, Photos, Preferences                                          |
+| - Game/Events Bookings: Register Members for Events, Availability Management                      |
+| - Notifications: Email, SMS, Push Notifications for Game Updates and Deadlines                   |
+| - Analytics and Reports Dashboard: Membership Statistics, Event Participation Insights            |
++----------------------------------------------------------------------------------------------------+
+
+                         Glossary: React/Next.js + Node.js or .NET Core + PostgreSQL
+
+-------------------------------------------------------------------------------------------------------------------
+START OF ARCHITECTURE FLOW CHART
+
+(User Layer)
++---------------------------------------------------------------------------------------------------+
+| User Interaction                                                                                 |
+| - Access Web UI via browser                                                                      |
+| - Authenticate/Login                                                                              |
+| - Interact with Dashboard: View Members, Payments, and Notifications                             |
++---------------------------------------------------------------------------------------------------+
+                                    |
+                                    v
+                         Frontend Communication Layer
+                         +---------------------------------------------------------------+
+                         |                   Frontend Framework (React/Next.js)          |
+                         +---------------------------------------------------------------+
+                         | - React Components for User Interface:                       |
+                         |    - Login Form, Member Details Pages, Event Registration    |
+                         |    - Forms for CRUD Operations                               |
+                         |    - Dashboards, Notifications, Analytics Widgets.           |
+                         | - Integration with GraphQL/REST for API Interaction           |
+                         | - Localization for Multi-language Support (if required)      |
+                         +---------------------------------------------------------------+
+                                    |
+                                    v
+--------------------------
++ Backend Communication +
+--------------------------            Frontend initiates an API request through:
+                                     - RESTful Endpoints (e.g., /members, /payments)
+                                     - WebSockets for Real-Time Updates (e.g., Notifications)
+
+-----------------------------------------------------------
+(Backend Server Logic via Node.js or .NET Core)
++------------------------------------------------------------------------------------------------------+
+|              Backend API Gateway: Node.js Express (Alt: ASP.NET Web API)                            |
+|                                                                                                      |
+| - Auth Module: JWT Generation, Token Refresh Endpoint                                                |
+| - Controllers/Endpoints Layer (REST or GraphQL via Apollo Server)                                    |
+|   - `/auth/login` - Authenticate and issue token                                                    |
+|   - `/members/`   - Member CRUD endpoints with pagination                                            |
+|   - `/payments/`  - Create/view/validate billing transactions                                        |
+|   - `/games/`     - Member signups or registration for events                                        |
+| - Services Layer:                                                                                   |
+|   - Business Logic (Validation of User Role, Permission Checks)                                     |
+|   - Server-Side Validation for Form Inputs (e.g., Input Sanitization)                               |
+|   - Dependency Injection for Service Coupling (e.g., Payments, Members Database)                    |
+| - Technologies:                                                                                     |
+|   - Node.js: Core Backend Server                                                                    |
+|   - Optional: .NET Core Web API Service                                                             |
++------------------------------------------------------------------------------------------------------+
+                                    |
+                                    v
+--------------------
++ Database Layer +
+--------------------        POSTGRESQL (Primary SQL Database):
+                           - Data Access Layer Libraries:
+                           - Node.js: Use Sequelize or TypeORM (ORM),
+                           AspTables diagram
+The flow diagram for your system is becoming extremely detailed, so we'll create dedicated sections for each part while visually laying out the backend and database layers. Here's the continuation and clarification of the earlier text design:
+
+---
+
+````markdown name=member-management-dashboard-detailed-extended.md
+## Database Design Details
+__Database Layer__: PostgreSQL Table Structure Overview
+
+```plaintext
++------------+      +----------------+      +----------------+      +------------------+
+|  USERS     |      |    MEMBERS     |      |   PAYMENTS     |      | EVENTS/BOOKINGS |
++------------+      +----------------+      +----------------+      +------------------+
+| id (PK)    |<-----| member_id (PK) |----->| payment_id (PK)|      | event_id (PK)    |
+| name       |      | first_name     |      | member_id (FK)|       | name             |
+| email      |      | last_name      |      | amount_paid   |       | available_seats  |
+| phone      |--+   | email          |      | status        |       | date             |
+| roles      |  |   | dob            |<----+| due_amount    |       | registration_id 🔥|
